@@ -23,15 +23,12 @@
 # Default image location: onenashev/coverity-scan-maven 
 FROM maven:3.3.9-jdk-8
 MAINTAINER Oleg Nenashev <o.v.nenashev@gmail.com>
-LABEL Description="This image is used to run Coverity Scan with Maven on a clean environment" Vendor="Oleg Nenashev" Version="0.  "
+LABEL Description="This image is used to run Coverity Scan with Maven on a clean environment" Vendor="Oleg Nenashev" Version="0.1"
 
-ARG EMAIL=o.v.nenashev@gmail.com
+# This data is required to retrieve Coverity Scan build tool from the site.
 ARG TOKEN
 ARG PROJECT
-#TODO: Support master as a default version (fetch changeset)
-ARG VERSION
-ARG ORGANIZATION=jenkinsci
-ARG COVERITY_SCAN_VERSION=8.5.0.3
+ARG ORGANIZATION
 
 RUN useradd -c "Coverity Scan user" -d /home/sauser/ -m sauser
 
@@ -42,7 +39,9 @@ RUN apt-get install git
 WORKDIR /home/sauser/
 RUN wget https://scan.coverity.com/download/linux64 --post-data "token=${TOKEN}&project=${ORGANIZATION}%2F${PROJECT}" -O coverity_tool.tgz
 RUN tar zxf coverity_tool.tgz
-ENV PATH "$PATH:/home/sauser/cov-analysis-linux64-$COVERITY_SCAN_VERSION/bin"
+RUN rm coverity_tool.tgz
+RUN mv cov-analysis-linux64-* cov-analysis-linux64
+ENV PATH "$PATH:/home/sauser/cov-analysis-linux64/bin"
 
 # Propagate build script
 COPY run-coverity.sh /usr/local/bin/run-analysis
