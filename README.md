@@ -28,3 +28,11 @@ Example:
 ```
 docker run onenashev/coverity-scan-maven jenkinsci remoting remoting-2.62  "o.v.nenashev@gmail.com" "$MY_TOKEN" 
 ```
+
+## Building image
+
+Image takes Coverity installer from the internet, hence it requires specification of credentials (organization, project name, token) for a successful run.
+
+```
+docker build --build-arg ORGANIZATION=jenkinsci --build-arg  PROJECT=remoting --build-arg TOKEN="$MY_TOKEN" -t onenashev/coverity-scan-maven .
+```
