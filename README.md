@@ -50,5 +50,6 @@ docker run -v maven-repo:/root/.m2 \
 Image takes Coverity installer from the internet, hence it requires specification of credentials (organization, project name, token) for a successful run.
 
 ```
-docker build --build-arg ORGANIZATION=jenkinsci --build-arg  PROJECT=remoting --build-arg TOKEN="$MY_TOKEN" -t onenashev/coverity-scan-maven .
+docker build --build-arg ORGANIZATION=jenkinsci --build-arg  PROJECT=remoting --build-arg TOKEN="$MY_TOKEN" \ 
+    -t onenashev/coverity-scan-maven .
 ```
