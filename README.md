@@ -9,6 +9,8 @@ The command-line interface may change in an incompatible way.
 
 ## Usage
 
+### Command Line
+
 Command line:
 
 ```
@@ -27,6 +29,20 @@ Example:
 
 ```
 docker run onenashev/coverity-scan-maven jenkinsci remoting remoting-2.62  "o.v.nenashev@gmail.com" "$MY_TOKEN" 
+```
+
+### Attaching external Maven repository
+
+The project is based on [Docker-Maven](https://github.com/carlossg/docker-maven), hence it is possible to use it's advanced features.
+
+```
+# Create docker volume
+docker volume create --name maven-repo
+
+# Run build with Docker volume attached
+docker run -v maven-repo:/root/.m2 \ 
+       onenashev/coverity-scan-maven jenkinsci remoting remoting-2.60 \
+       "o.v.nenashev@gmail.com" "$MY_TOKEN"
 ```
 
 ## Building image

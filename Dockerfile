@@ -29,24 +29,21 @@ LABEL Description="This image is used to run Coverity Scan with Maven on a clean
 ARG TOKEN
 ARG PROJECT
 ARG ORGANIZATION
-
-RUN useradd -c "Coverity Scan user" -d /home/sauser/ -m sauser
+ARG USER_HOME_DIR="/root"
 
 # Install Development Tools
 RUN apt-get install git
 
 # Install Coverity Scan Tool
-WORKDIR /home/sauser/
+WORKDIR $USER_HOME_DIR
 RUN wget https://scan.coverity.com/download/linux64 --post-data "token=${TOKEN}&project=${ORGANIZATION}%2F${PROJECT}" -O coverity_tool.tgz
 RUN tar zxf coverity_tool.tgz
 RUN rm coverity_tool.tgz
 RUN mv cov-analysis-linux64-* cov-analysis-linux64
-ENV PATH "$PATH:/home/sauser/cov-analysis-linux64/bin"
+ENV PATH "$PATH:$USER_HOME_DIR/cov-analysis-linux64/bin"
 
 # Propagate build script
 COPY run-coverity.sh /usr/local/bin/run-analysis
 RUN chmod +x /usr/local/bin/run-analysis
-
-USER sauser
 
 ENTRYPOINT ["run-analysis"]
