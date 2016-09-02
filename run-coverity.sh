@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 printHelp() {
   echo "Runs Coverity Scan for Maven project."
