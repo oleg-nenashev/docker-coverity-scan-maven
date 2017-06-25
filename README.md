@@ -4,8 +4,15 @@ Coverity Scan for Maven. In Docker
 Contains an image, which allows running Coverity Scan in Docker 
 and uploading results to the [Coverity Scan](https://scan.coverity.com) server.
 
-Currently the repository is in the project state. 
+Currently the repository is in the alpha state. 
 The command-line interface may change in an incompatible way.
+
+## Building
+
+Coverity Scan project has no clear distribution policy,
+but you can build a personal Docker image using `Dockerfile` from this repository.
+
+`docker build -t onenashev/coverity-scan-maven --build-arg TOKEN=${COVERITY_TOKEN} --build-arg ORGANIZATION=jenkinsci --build-arg PROJECT=remoting .`
 
 ## Usage
 

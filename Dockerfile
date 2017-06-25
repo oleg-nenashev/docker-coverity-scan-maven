@@ -32,18 +32,16 @@ ARG ORGANIZATION
 ARG USER_HOME_DIR="/root"
 
 # Install Development Tools
-RUN apt-get install git
+RUN apt-get install -y git
 
 # Install Coverity Scan Tool
 WORKDIR $USER_HOME_DIR
-RUN wget https://scan.coverity.com/download/linux64 --post-data "token=${TOKEN}&project=${ORGANIZATION}%2F${PROJECT}" -O coverity_tool.tgz
-RUN tar zxf coverity_tool.tgz
-RUN rm coverity_tool.tgz
-RUN mv cov-analysis-linux64-* cov-analysis-linux64
+RUN wget https://scan.coverity.com/download/linux64 --post-data "token=${TOKEN}&project=${ORGANIZATION}%2F${PROJECT}" -O coverity_tool.tgz && tar zxf coverity_tool.tgz && rm coverity_tool.tgz && mv cov-analysis-linux64-* cov-analysis-linux64
 ENV PATH "$PATH:$USER_HOME_DIR/cov-analysis-linux64/bin"
 
 # Propagate build script
 COPY run-coverity.sh /usr/local/bin/run-analysis
 RUN chmod +x /usr/local/bin/run-analysis
 
+VOLUME "$USER_HOME_DIR/.m2"
 ENTRYPOINT ["run-analysis"]
