@@ -13,7 +13,7 @@ The command-line interface may change in an incompatible way.
 
 Command line:
 
-```
+```shell
 docker run --rm onenashev/coverity-scan-maven <organization> <project> <version> <email> <token>
 ```
 
@@ -27,29 +27,31 @@ Arguments:
 
 Example:
 
-```
+```shell
 docker run --rm onenashev/coverity-scan-maven jenkinsci remoting remoting-2.62  "o.v.nenashev@gmail.com" "$MY_TOKEN" 
 ```
 
 ### Attaching external Maven repository
 
-The project is based on [Docker-Maven](https://github.com/carlossg/docker-maven), hence it is possible to use it's advanced features.
+The project is based on [Docker-Maven](https://github.com/carlossg/docker-maven), 
+and all custom features from that project apply to this image.
 
+Maven repository can be passed as a path or as a named volume.
+
+```shell
+# Local path (or a path on the Docker host)
+docker run --rm -v /Users/oleg-nenashev/.m2:/root/.m2 onenashev/coverity-scan-maven jenkinsci remoting remoting-2.60 "o.v.nenashev@gmail.com" "$MY_TOKEN"
 ```
-# Create docker volume
-docker volume create --name maven-repo
 
-# Run build with Docker volume attached
-docker run --rm -v maven-repo:/root/.m2 \ 
-       onenashev/coverity-scan-maven jenkinsci remoting remoting-2.60 \
-       "o.v.nenashev@gmail.com" "$MY_TOKEN"
+```shell
+# Named volume
+docker run --rm -v maven-repo:/root/.m2 onenashev/coverity-scan-maven jenkinsci remoting remoting-2.60 "o.v.nenashev@gmail.com" "$MY_TOKEN"
 ```
 
 ## Building image
 
 Image takes Coverity installer from the internet, hence it requires specification of credentials (organization, project name, token) for a successful run.
 
-```
-docker build --build-arg ORGANIZATION=jenkinsci --build-arg  PROJECT=remoting --build-arg TOKEN="$MY_TOKEN" \ 
-    -t onenashev/coverity-scan-maven .
+```shell
+docker build --build-arg ORGANIZATION=jenkinsci --build-arg  PROJECT=remoting --build-arg TOKEN="$MY_TOKEN" -t onenashev/coverity-scan-maven .
 ```
