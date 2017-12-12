@@ -7,13 +7,6 @@ and uploading results to the [Coverity Scan](https://scan.coverity.com) server.
 Currently the repository is in the alpha state. 
 The command-line interface may change in an incompatible way.
 
-## Building
-
-Coverity Scan project has no clear distribution policy,
-but you can build a personal Docker image using `Dockerfile` from this repository.
-
-`docker build -t onenashev/coverity-scan-maven --build-arg TOKEN=${COVERITY_TOKEN} --build-arg ORGANIZATION=jenkinsci --build-arg PROJECT=remoting .`
-
 ## Usage
 
 ### Command Line
@@ -21,7 +14,7 @@ but you can build a personal Docker image using `Dockerfile` from this repositor
 Command line:
 
 ```
-docker run onenashev/coverity-scan-maven <organization> <project> <version> <email> <token>
+docker run --rm onenashev/coverity-scan-maven <organization> <project> <version> <email> <token>
 ```
 
 Arguments:
@@ -35,7 +28,7 @@ Arguments:
 Example:
 
 ```
-docker run onenashev/coverity-scan-maven jenkinsci remoting remoting-2.62  "o.v.nenashev@gmail.com" "$MY_TOKEN" 
+docker run --rm onenashev/coverity-scan-maven jenkinsci remoting remoting-2.62  "o.v.nenashev@gmail.com" "$MY_TOKEN" 
 ```
 
 ### Attaching external Maven repository
@@ -47,7 +40,7 @@ The project is based on [Docker-Maven](https://github.com/carlossg/docker-maven)
 docker volume create --name maven-repo
 
 # Run build with Docker volume attached
-docker run -v maven-repo:/root/.m2 \ 
+docker run --rm -v maven-repo:/root/.m2 \ 
        onenashev/coverity-scan-maven jenkinsci remoting remoting-2.60 \
        "o.v.nenashev@gmail.com" "$MY_TOKEN"
 ```
